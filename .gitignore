@@ -1,0 +1,15 @@
+# 檔案: .gitignore
+
+# 虛擬環境
+venv/
+__pycache__/
+
+# Python 
+*.pyc
+*.o
+*~
+
+# IDE
+.vscode/
+
+# 💡 備註：bokelai.db 必須被追蹤，所以不能寫在這裡。

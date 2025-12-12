@@ -1,0 +1,7 @@
+# 檔案: .gitattributes
+
+# 統一換行符號
+* text=auto eol=lf
+
+# 將 SQLite 資料庫視為二進位檔案，防止損壞
+*.db binary
