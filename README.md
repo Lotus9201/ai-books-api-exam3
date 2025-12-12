@@ -1,5 +1,5 @@
 1.**如何啟動 FastAPI 伺服器**
-指令:uvicorn app:app --reload
+指令:uvicorn app:app --reload  
 2.**啟動後能使用:**
 Swagger UI（測API）  
 http://127.0.0.1:8000/docs
