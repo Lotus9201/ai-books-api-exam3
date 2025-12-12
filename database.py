@@ -1,14 +1,29 @@
 import sqlite3
 
-# 建立資料庫連線
+
 def get_db_connection() -> sqlite3.Connection:
+    """
+    SQLite 資料庫連線。
+
+    回傳:
+        sqlite3.Connection: 資料庫連線物件
+    """
     conn = sqlite3.connect("bokelai.db")
-    conn.row_factory = sqlite3.Row  # 讓查詢結果可以像 dict
+    conn.row_factory = sqlite3.Row  # 查詢結果轉成 dict-like 結構
     return conn
 
 
-# 取得所有書籍（支援 skip, limit）
 def get_all_books(skip: int, limit: int) -> list[dict]:
+    """
+    取得所有書籍（支援分頁）。
+
+    參數:
+        skip (int): 跳過筆數
+        limit (int): 取得筆數
+
+    回傳:
+        list[dict]: 書籍資料列表
+    """
     conn = get_db_connection()
     cursor = conn.execute(
         "SELECT * FROM books LIMIT ? OFFSET ?",
@@ -19,8 +34,16 @@ def get_all_books(skip: int, limit: int) -> list[dict]:
     return books
 
 
-# 依 ID 取得單一本書
 def get_book_by_id(book_id: int) -> dict | None:
+    """
+    依照ID來取得單一本書籍。
+
+    參數:
+        book_id (int): 書籍 ID
+
+    回傳:
+        dict | None: 書籍資料，找不到則回傳 None
+    """
     conn = get_db_connection()
     cursor = conn.execute(
         "SELECT * FROM books WHERE id = ?",
@@ -31,7 +54,6 @@ def get_book_by_id(book_id: int) -> dict | None:
     return dict(row) if row else None
 
 
-# 新增書籍，回傳新書的 id
 def create_book(
     title: str,
     author: str,
@@ -41,6 +63,21 @@ def create_book(
     isbn: str | None,
     cover_url: str | None
 ) -> int:
+    """
+    新增書籍。
+
+    參數:
+        title (str): 書名
+        author (str): 作者
+        publisher (str | None): 出版社
+        price (int): 價格
+        publish_date (str | None): 出版日期
+        isbn (str | None): ISBN 編號
+        cover_url (str | None): 封面 URL
+
+    回傳:
+        int: 新增書籍的 ID
+    """
     conn = get_db_connection()
     cursor = conn.execute(
         """
@@ -55,7 +92,6 @@ def create_book(
     return book_id
 
 
-# 更新書籍資料，回傳是否成功
 def update_book(
     book_id: int,
     title: str,
@@ -66,6 +102,22 @@ def update_book(
     isbn: str | None,
     cover_url: str | None
 ) -> bool:
+    """
+    更新書籍資料。
+
+    參數:
+        book_id (int): 書籍 ID
+        title (str): 書名
+        author (str): 作者
+        publisher (str | None): 出版社
+        price (int): 價格
+        publish_date (str | None): 出版日期
+        isbn (str | None): ISBN
+        cover_url (str | None): 封面 URL
+
+    回傳:
+        bool: 是否成功更新
+    """
     conn = get_db_connection()
     cursor = conn.execute(
         """
@@ -81,8 +133,16 @@ def update_book(
     return updated
 
 
-# 刪除書籍
 def delete_book(book_id: int) -> bool:
+    """
+    刪除書籍。
+
+    參數:
+        book_id (int): 書籍 ID
+
+    回傳:
+        bool: 是否成功刪除
+    """
     conn = get_db_connection()
     cursor = conn.execute(
         "DELETE FROM books WHERE id = ?",

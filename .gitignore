@@ -2,6 +2,7 @@
 
 # 虛擬環境
 venv/
+env/
 __pycache__/
 
 # Python 
